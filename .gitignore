@@ -1,0 +1,29 @@
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Model outputs and checkpoints
+models/
+runs/
+checkpoint-*/
+
+# Extracted APK / reverse engineering files
+reverse/
+*.apk
+*.xapk
+
+# Large/raw/permission-sensitive data
+data/raw/
+data/final/
+*.jsonl
+*.csv
+*.txt
+
+# Logs
+*.log
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/

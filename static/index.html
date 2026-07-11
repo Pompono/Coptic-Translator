@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Coptic-English Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f3ff;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            color: #5b3f91;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        select, button {
+            margin-top: 15px;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 10px;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        button {
+            width: 100%;
+            background: #7b61ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #6348e8;
+        }
+
+        .output {
+            margin-top: 25px;
+            padding: 20px;
+            min-height: 80px;
+            border-radius: 10px;
+            background: #eef7ff;
+            font-size: 24px;
+            white-space: pre-wrap;
+        }
+
+        .label {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Coptic-English Translator</h1>
+
+        <div class="label">Enter text:</div>
+        <textarea id="inputText" placeholder="Type English or Coptic here..."></textarea>
+
+        <div class="label">Direction:</div>
+        <select id="direction">
+            <option value="english_to_coptic">English → Coptic</option>
+            <option value="coptic_to_english">Coptic → English</option>
+        </select>
+
+        <button onclick="translateText()">Translate</button>
+
+        <div class="label">Translation:</div>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        async function translateText() {
+            const text = document.getElementById("inputText").value;
+            const direction = document.getElementById("direction").value;
+            const output = document.getElementById("output");
+
+            output.textContent = "Translating...";
+
+            try {
+                const response = await fetch("/translate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        direction: direction
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.translation) {
+                    output.textContent = data.translation;
+                } else if (data.error) {
+                    output.textContent = "Error: " + data.error;
+                } else {
+                    output.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                output.textContent = "Request failed: " + error;
+            }
+        }
+    </script>
+</body>
+</html>
