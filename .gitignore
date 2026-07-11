@@ -27,3 +27,5 @@ data/final/
 .DS_Store
 Thumbs.db
 .vscode/
+
+bohairic_dictionary.json
